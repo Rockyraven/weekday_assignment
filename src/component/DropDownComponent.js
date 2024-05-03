@@ -20,40 +20,17 @@ const MenuProps = {
 };
 
 
-export default function DropDownComponent({placeHolder, data}) {
-  // const data = [
-  //   'Oliver Hansen',
-  //   'Van Henry',
-  //   'April Tucker',
-  //   'Ralph Hubbard',
-  //   'Omar Alexander',
-  //   'Carlos Abbott',
-  //   'Miriam Wagner',
-  //   'Bradley Wilkerson',
-  //   'Virginia Andrews',
-  //   'Kelly Snyder',
-  // ];
-  
+export default function DropDownComponent({ placeHolder, data, onSelect, values }) {
+
   function getStyles(name, personName, theme) {
     return {
       fontWeight:
-        personName.indexOf(name) === -1
+        personName?.indexOf(name) === -1
           ? theme.typography.fontWeightRegular
           : theme.typography.fontWeightMedium,
     };
   }
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
-
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
 
   return (
     <div>
@@ -63,8 +40,8 @@ export default function DropDownComponent({placeHolder, data}) {
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple
-          value={personName}
-          onChange={handleChange}
+          value={values}
+          onChange={(e) => onSelect(e.target.value)}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -79,7 +56,7 @@ export default function DropDownComponent({placeHolder, data}) {
             <MenuItem
               key={name}
               value={name}
-              style={getStyles(name, personName, theme)}
+              style={getStyles(name, values, theme)}
             >
               {name}
             </MenuItem>
